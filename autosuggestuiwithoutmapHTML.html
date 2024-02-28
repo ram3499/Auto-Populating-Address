@@ -1,0 +1,89 @@
+﻿<html>
+<head>
+    <title>autosuggestuiwithoutmapHTML</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: 'Segoe UI', Helvetica, Arial, Sans-Serif
+        }
+    </style>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+    <meta>
+</head>
+<body style="overflow-wrap: break-word;" onfocusout="parent.setEmailRange();">
+    <div id="searchBoxContainer" style="font-family: undefined;">
+        <input type="text" id="searchBox" placeholder="Search your address here..." onfocus="window.parent.document.getElementById('IFRAME_AddressSearch').style.height = '300px'" onfocusout="myFunction()" autocomplete="off" style="display: block;width: 340px;height: 35px;font-size: 15px;line-height: 1.42857;
+color: rgb(85, 85, 85);background-color: rgb(255, 255, 255);background-image: none;overflow:scroll;
+border: 1px solid rgb(255, 255, 255);border-radius: 0px;box-shadow: rgba(0, 0, 0, 0.075) 0px 1px 1px inset;
+transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;box-sizing: content-box;/* padding: 10px; */padding-left: 12px;">
+    </div>
+    <script type="text/javascript">
+        function myFunction() {
+            window.parent.document.getElementById('IFRAME_AddressSearch').style.height = '20px'
+        }
+function setClientApiContext(formContext) {
+// Optionally set Xrm and formContext as global variables on the page.
+window._formContext = formContext;
+﻿}
+        function loadMapScenario() {
+            debugger;
+            Microsoft.Maps.loadModule('Microsoft.Maps.AutoSuggest', {
+                callback: onLoad,
+                errorCallback: onError,
+                credentials: 'ApTXfVM_MCrLErwU-i7VSOGu99sPMEknuZtIn0c0TwuQnrpw8XJsGqp9p7Ez29xB'
+            });
+            function onLoad() {
+                var options = {
+                    maxResults: 5
+                };
+                debugger;
+                var manager = new Microsoft.Maps.AutosuggestManager(options);
+                manager.attachAutosuggest('#searchBox', '#searchBoxContainer', selectedSuggestion);
+
+            }
+
+
+
+            function onError(message) {
+                document.getElementById('printoutPanel').innerHTML = message;
+            }
+            function setHeight() { window.parent.document.getElementById("IFRAME_AddressSearch").style.height = '200px'; }
+
+            function selectedSuggestion(suggestionResult) {
+                debugger;
+                //document.getElementById('printoutPanel').innerHTML =
+                //    'Street Address: ' + suggestionResult.address.addressLine +
+                //    '<br>City:' + suggestionResult.address.locality +
+                //    '<br> State Or Province: ' + suggestionResult.address.adminDistrict +
+                //    '<br> Postal Code:' + suggestionResult.address.postalCode +
+                //    '<br>Country: ' + suggestionResult.address.countryRegion;
+                window.parent.Xrm.Page.getAttribute("address1_line1").setValue(suggestionResult.address.addressLine);
+                window.parent.Xrm.Page.getAttribute("address1_city").setValue(suggestionResult.address.locality);
+                window.parent.Xrm.Page.getAttribute("address1_country").setValue(suggestionResult.address.countryRegion);
+                window.parent.Xrm.Page.getAttribute("address1_stateorprovince").setValue(suggestionResult.address.adminDistrict);
+                window.parent.Xrm.Page.getAttribute("address1_postalcode").setValue(suggestionResult.address.postalCode);
+
+                //var nameControl = window.parent.Xrm.Page.getControl("IFRAME_AddressSearch");
+
+                window.parent.document.getElementById("IFRAME_AddressSearch").style.height = '15px';
+                //window.parent.document.getElementById("IFRAME_AddressSearch").style.width = '100%';
+
+            }
+        }
+    </script>
+    <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?key=AvoAm8hT1rowMfM2mKrXd6nwwVqEoXmVJAQKJyiN2OBMPS0F0bFWvPdfWunRMbF5&amp;callback=loadMapScenario" async="" defer=""></script>
+
+
+
+</body>
+</html>
+
